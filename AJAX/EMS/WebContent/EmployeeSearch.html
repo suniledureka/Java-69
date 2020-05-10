@@ -1,0 +1,84 @@
+<html>
+ <head>
+  <title>edureka | ems</title>
+  <style>
+   body{
+    background-color:teal;
+    text-align:center;
+   }
+   table{
+    width:450px;
+    margin:150px auto;
+    background:linear-gradient(45deg,darkslategray,blueviolet);
+    padding:10px;
+    font-size:20px;
+    color:white;
+    border-radius:20px;
+    box-shadow:0 0 15px white;
+   }
+   tr{
+    height:50px;
+   }
+   input{
+    font-size:18px;
+   }
+  </style>
+  <script type="text/javascript">
+   let xhr;
+   function searchEmployee(no)
+   {
+	   /*-- create XMLHttpRequest object based on browser -- */
+	   if(window.XMLHttpRequest)
+		   xhr = new XMLHttpRequest() //for latest browser
+	   else
+		   xhr = new ActiveXObject("Microsoft.XMLHTTP")
+	   console.log(xhr.readyState)
+	   
+	   xhr.open("GET","search?eno="+no,true)
+	   
+	   xhr.onreadystatechange = fun1
+	   
+	   xhr.send()
+   }
+   
+   function fun1(){
+	   //alert("state = "+ xhr.readyState)
+	   console.log("state = "+ xhr.readyState)
+	   let name='', sal=''
+	   
+	   if(xhr.readyState == 4 && xhr.status == 200){
+		   //get the response text
+		   let response = xhr.responseText
+			if(response.length > 2){
+				let emp = JSON.parse(response)
+				name = emp.name
+				sal = emp.sal
+			}   
+			else{
+				name='No matching Employee'
+				sal = ''
+			}
+		    document.querySelector('#name_label').innerText = name
+		    document.querySelector('#sal_label').innerText = sal
+	   }
+   }
+  </script>
+ </head>
+ <body>  
+   <table>
+     <tr>
+       <td>Emp No</td>
+       <td><input type=text name=eno size=18 autofocus onblur="searchEmployee(this.value)"></td>
+     </tr>
+     <tr>
+       <td>Name</td>
+       <td><span id="name_label"></span></td>
+     </tr>     
+     <tr>
+       <td>Salary</td>
+       <td><span id="sal_label"></td>
+     </tr>
+     </tr>
+   </table>
+ </body>
+</html>
